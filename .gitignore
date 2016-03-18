@@ -1,6 +1,6 @@
 .vagrant
 .idea
-project
+project/
 html/
 /grav/
 /attendize/
