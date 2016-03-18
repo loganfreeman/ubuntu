@@ -2,4 +2,6 @@
 .idea
 project
 html/
-grav/
+/grav/
+/attendize/
+/php-getting-started/
