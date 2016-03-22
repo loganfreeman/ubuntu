@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
- 
+
 # variables
 DBNAME=project_name
 DBUSER=project_user
@@ -55,9 +55,8 @@ echo -e "\n--- Install MySQL specific packages and settings ---\n"
 echo "mysql-server mysql-server/root_password password $DBPASSWD" | debconf-set-selections
 echo "mysql-server mysql-server/root_password_again password $DBPASSWD" | debconf-set-selections
 apt-get -y install mysql-server-5.5 > /dev/null 2>&1
- 
+
 # mysql config
 echo -e "\n--- Setting up our MySQL user and db ---\n"
 mysql -uroot -p$DBPASSWD -e "CREATE DATABASE $DBNAME"
 mysql -uroot -p$DBPASSWD -e "grant all privileges on $DBNAME.* to '$DBUSER'@'localhost' identified by '$DBPASSWD'"
-

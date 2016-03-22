@@ -5,6 +5,11 @@ set -e
 
 ## Utils
 
+command_exists () {
+    type "$1" &> /dev/null ;
+}
+
+
 print_msg() {
 	echo "Frappe password: $FRAPPE_USER_PASS"
 	echo "MariaDB root password: $MSQ_PASS"
@@ -209,7 +214,7 @@ install_packages() {
 		run_cmd sudo apt-get install -y python-dev python-setuptools build-essential python-mysqldb git \
 			ntp vim screen htop mariadb-server mariadb-common libmariadbclient-dev \
 			libxslt1.1 libxslt1-dev redis-server libssl-dev libcrypto++-dev postfix nginx \
-			supervisor python-pip fontconfig libxrender1 libxext6 xfonts-75dpi xfonts-base nodejs npm
+			supervisor python-pip fontconfig libxrender1 libxext6 xfonts-75dpi xfonts-base
 
 		if [ $OS_VER == "precise" ]; then
 			run_cmd sudo apt-get install -y libtiff4-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk
@@ -230,8 +235,13 @@ install_packages() {
 
 install_wkhtmltopdf_centos () {
 
+	if which wkhtmltopdf >/dev/null; then
+		echo "wkhtmltopdf already exists"
+		return 0
+	fi
+
 	if [[ $OS == "centos" && $OS_VER == "7" && $T_ARCH == "i386" ]]; then
-		echo "Cannot install wkhtmltodpdf. Skipping..."
+		echo "Cannot install wkhtmltopdf. Skipping..."
 		return 0
 	fi
 	RPM="wkhtmltox-0.12.2.1_linux-$OS$OS_VER-$WK_ARCH.rpm"
@@ -240,6 +250,12 @@ install_wkhtmltopdf_centos () {
 }
 
 install_wkhtmltopdf_deb () {
+
+	if which wkhtmltopdf >/dev/null; then
+		echo "wkhtmltopdf already exists"
+		return 0
+	fi
+
 	WK_VER=$OS_VER
 
 	if [[ $OS_VER == "utopic" ||  $OS_VER == "vivid" ||  $OS_VER == "wily" ]]; then
@@ -367,8 +383,21 @@ setup_debconf() {
 	debconf-set-selections <<< "mariadb-server-5.5 mysql-server/root_password_again password $MSQ_PASS"
 }
 
+check_repo_exists() {
+	CWD=`pwd`
+	cd "/home/$FRAPPE_USER/bench-repo"
+	git rev-parse --is-inside-work-tree
+	cd "${CWD}"
+}
+
 install_bench() {
-	run_cmd sudo su $FRAPPE_USER -c "cd /home/$FRAPPE_USER && git clone https://github.com/frappe/bench --branch $BENCH_BRANCH bench-repo"
+	check_repo_exists
+	if [ $? -eq 0 ]; then
+		echo "bench-repo almost exists"
+	else
+		echo "git clone https://github.com/frappe/bench --branch $BENCH_BRANCH bench-repo"
+		run_cmd sudo su $FRAPPE_USER -c "cd /home/$FRAPPE_USER && git clone https://github.com/frappe/bench --branch $BENCH_BRANCH bench-repo"
+	fi
 	if hash pip-2.7 &> /dev/null; then
 		PIP="pip-2.7"
 	elif hash pip2.7 &> /dev/null; then

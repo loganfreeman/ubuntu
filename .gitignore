@@ -3,3 +3,6 @@
 project/
 html/
 grav/
+*.deb
+.env
+mysite/
