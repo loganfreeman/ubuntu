@@ -23,12 +23,6 @@ server {
                 deny all;
         }
 
-        # Only for nginx-naxsi : process denied requests
-        #location /RequestDenied {
-                # For example, return an error code
-                #return 418;
-        #}
-
         #error_page 404 /404.html;
 
         # redirect server error pages to the static page /50x.html
@@ -54,10 +48,4 @@ server {
                 include fastcgi_params;
         }
 
-        # deny access to .htaccess files, if Apache's document root
-        # concurs with nginx's one
-        #
-        #location ~ /\.ht {
-        #       deny all;
-        #}
 }
