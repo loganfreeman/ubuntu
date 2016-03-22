@@ -1,22 +1,21 @@
-<<<<<<< HEAD
+
 .vagrant
 .idea
 project
 html/
 grav/
-=======
+
 .vagrant
 .idea
 project/
 html/
-<<<<<<< HEAD
+
 /grav/
 /attendize/
 /php-getting-started/
-=======
+
 grav/
 *.deb
 .env
 mysite/
->>>>>>> 4b91687faeeb99ad14fd4cc5884e4a0e61aa5e17
->>>>>>> f8b759c693e001a8aceed6ee1981d2b0bb8bc85c
+attendize/
