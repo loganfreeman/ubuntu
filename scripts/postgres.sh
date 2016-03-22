@@ -8,7 +8,7 @@ APP_DB_PASS=dbpass
 APP_DB_NAME=three
 
 # Edit the following to change the version of PostgreSQL that is installed
-PG_VERSION=9.4
+PG_VERSION=9.5
 
 ###########################################################
 # Changes below this line are probably not necessary
