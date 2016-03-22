@@ -1,5 +1,16 @@
+<<<<<<< HEAD
 .vagrant
 .idea
 project
 html/
 grav/
+=======
+.vagrant
+.idea
+project/
+html/
+grav/
+*.deb
+.env
+mysite/
+>>>>>>> 4b91687faeeb99ad14fd4cc5884e4a0e61aa5e17
